@@ -1,0 +1,10 @@
+.env
+*.pyc
+__pycache__/
+.pytest_cache/
+uploads/*
+exports/*
+*.db
+*.xlsx
+*.csv
+*.code-workspace

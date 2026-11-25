@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Product Analytics · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.products">Analitik Produk</span>{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="products.eyebrow">Performa Portofolio · Ekonomi SKU</p>
+    <h1 data-i18n="products.title">Analitik Produk</h1>
+    <p class="page-description" data-i18n="products.desc">Evaluasi kontribusi pendapatan tingkat SKU, keseimbangan kategori, volume unit terjual, dan efisiensi margin produk.</p>
+  </div>
+</section>
+
+<section class="kpi-grid compact" id="productKpis" aria-label="Product portfolio summary">
+  <article class="kpi-card"><span data-i18n="products.activeSkus">SKU Aktif</span><strong id="prodKpiCount">—</strong><small class="kpi-context" data-i18n="products.withSales">Memiliki transaksi</small></article>
+  <article class="kpi-card"><span data-i18n="products.leadingSku">Produk Terlaris</span><strong id="prodKpiLeader">—</strong><small class="kpi-context" id="prodKpiLeaderRev">—</small></article>
+  <article class="kpi-card"><span data-i18n="products.highestMarginSku">SKU Margin Tertinggi</span><strong id="prodKpiMarginLeader">—</strong><small class="kpi-context" id="prodKpiMarginVal">—</small></article>
+  <article class="kpi-card"><span data-i18n="products.categoryCount">Jumlah Kategori</span><strong id="prodKpiCategories">—</strong><small class="kpi-context" data-i18n="products.activeLines">Lini produk aktif</small></article>
+</section>
+
+<section class="analytics-grid">
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="products.revContribution">Kontribusi Pendapatan</p>
+        <h2 data-i18n="products.top8Title">8 Produk Teratas berdasarkan Pendapatan</h2>
+      </div>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="topProductsChart"></canvas></div>
+  </article>
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="products.categoryMix">Bauran Kategori</p>
+        <h2 data-i18n="overview.salesByCategory">Penjualan per Kategori</h2>
+      </div>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="productCategoryChart"></canvas></div>
+  </article>
+</section>
+
+<article class="panel panel-full">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="products.matrixEyebrow">Peringkat SKU &amp; Matriks Margin</p>
+      <h2 data-i18n="products.matrixTitle">Pendapatan dan Profitabilitas per Produk</h2>
+    </div>
+    <div class="panel-header-actions">
+      <div class="table-search-inline">
+        <i class="bi bi-search"></i>
+        <input type="search" id="productTableSearch" data-i18n-placeholder="table.searchProductCat" placeholder="Cari produk atau kategori..." aria-label="Filter product table">
+      </div>
+    </div>
+  </header>
+  <div class="table-scroll">
+    <table class="data-table" id="productTableEl">
+      <thead>
+        <tr>
+          <th data-sort="product_name" data-i18n="th.product">Produk</th>
+          <th data-sort="category" data-i18n="th.category">Kategori</th>
+          <th data-sort="units" class="num-col" data-i18n="th.units">Unit Terjual</th>
+          <th data-sort="revenue" class="num-col" data-i18n="th.netRevenue">Pendapatan Bersih</th>
+          <th data-sort="profit" class="num-col" data-i18n="th.netProfit">Laba Bersih</th>
+          <th data-sort="profit_margin" class="num-col" data-i18n="th.margin">Margin</th>
+        </tr>
+      </thead>
+      <tbody id="productTable"></tbody>
+    </table>
+  </div>
+  <footer class="table-footer" id="productTableFooter"></footer>
+</article>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>document.addEventListener('DOMContentLoaded', () => loadProductAnalytics());</script>
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block title %}Overview · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.overview">Ringkasan</span>{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="overview.eyebrow">Ruang Kerja Eksekutif · Buku Besar Komersial</p>
+    <h1 data-i18n="overview.title">Ringkasan Eksekutif</h1>
+    <p class="page-description" data-i18n="overview.desc">Dapatkan gambaran menyeluruh performa bisnis Anda mulai dari laju pendapatan, bauran produk, margin wilayah, hingga arus transaksi.</p>
+  </div>
+  <div class="page-heading-actions">
+    <a href="/reports" class="secondary-button"><i class="bi bi-sliders2"></i> <span data-i18n="overview.customReport">Laporan Kustom</span></a>
+    <button class="primary-button" type="button" id="exportOverview">
+      <i class="bi bi-download"></i> <span data-i18n="overview.exportBtn">Ekspor laporan</span>
+    </button>
+  </div>
+</section>
+
+<section class="overview-grid">
+  <article class="revenue-hero" aria-label="Primary revenue metric">
+    <div class="hero-top">
+      <div>
+        <div class="metric-label-row">
+          <span class="metric-label" data-i18n="overview.totalNetRevenue">Total Pendapatan Bersih</span>
+          <span class="info-tooltip" data-tip="Penjualan kotor dikurangi diskon promosi untuk pesanan selesai"><i class="bi bi-info-circle"></i></span>
+        </div>
+        <div class="hero-value" id="kpiRevenue">—</div>
+      </div>
+      <div class="hero-badges">
+        <span class="growth-chip" id="kpiGrowth" title="Pertumbuhan paruh kedua vs paruh pertama periode">—</span>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span data-i18n="overview.accountingBasis">Basis Akuntansi</span>
+        <strong data-i18n="overview.netOfDiscounts">Bersih Setelah Diskon</strong>
+      </div>
+      <div class="hero-meta-item">
+        <span data-i18n="overview.activeScope">Cakupan Aktif</span>
+        <strong id="revenuePeriodMeta">Semua periode tersedia</strong>
+      </div>
+      <div class="hero-meta-item">
+        <span data-i18n="overview.realizedProfit">Laba Bersih Terealisasi</span>
+        <strong id="heroProfitInline">—</strong>
+      </div>
+    </div>
+
+    <div class="hero-chart-container">
+      <div class="hero-chart-label">
+        <span data-i18n="overview.periodTrajectory">Trajektori periode</span>
+        <small id="heroTrendSummary">Kurva pendapatan bersih</small>
+      </div>
+      <div class="hero-chart"><canvas id="heroTrendChart"></canvas></div>
+    </div>
+  </article>
+
+  <div class="supporting-metrics" id="kpiGrid" aria-label="Supporting key performance indicators">
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.totalOrders">Total Pesanan</span>
+        <i class="bi bi-receipt"></i>
+      </div>
+      <strong id="kpiOrders">—</strong>
+      <small data-i18n="kpi.totalOrdersSub">Pesanan unik selesai</small>
+    </article>
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.totalProfit">Total Laba Bersih</span>
+        <i class="bi bi-cash-stack"></i>
+      </div>
+      <strong id="kpiProfit">—</strong>
+      <small data-i18n="kpi.totalProfitSub">Setelah HPP &amp; ongkos kirim</small>
+    </article>
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.aov">Rata-rata Nilai Pesanan</span>
+        <i class="bi bi-basket2"></i>
+      </div>
+      <strong id="kpiAov">—</strong>
+      <small data-i18n="kpi.aovSub">Pendapatan bersih per pesanan</small>
+    </article>
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.activeCustomers">Pelanggan Aktif</span>
+        <i class="bi bi-person-check"></i>
+      </div>
+      <strong id="kpiCustomers">—</strong>
+      <small data-i18n="kpi.activeCustomersSub">Akun pembeli unik</small>
+    </article>
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.unitsSold">Unit Terjual</span>
+        <i class="bi bi-box-seam"></i>
+      </div>
+      <strong id="kpiUnits">—</strong>
+      <small data-i18n="kpi.unitsSoldSub">Total volume barang terkirim</small>
+    </article>
+    <article class="supporting-metric">
+      <div class="metric-head">
+        <span data-i18n="kpi.profitMargin">Margin Laba</span>
+        <i class="bi bi-percent"></i>
+      </div>
+      <strong id="kpiMargin">—</strong>
+      <small data-i18n="kpi.profitMarginSub">Rasio laba terhadap pendapatan</small>
+    </article>
+  </div>
+</section>
+
+<section class="insights-strip" id="businessInsights" aria-label="Automated business insights">
+  <div class="insight-heading">
+    <span class="eyebrow" data-i18n="insights.eyebrow">Sintesis Otomatis</span>
+    <strong data-i18n="insights.title">Wawasan Bisnis</strong>
+    <small data-i18n="insights.sub">Dihitung langsung dari data terpilih</small>
+  </div>
+  <div class="insight-empty" data-i18n="insights.loading">Menganalisis performa terpilih...</div>
+</section>
+
+<section class="dashboard-grid">
+  <article class="panel revenue-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="overview.temporalEyebrow">Performa Waktu</p>
+        <h2 data-i18n="overview.revenueProfitTrajectory">Tren Pendapatan &amp; Laba</h2>
+      </div>
+      <div class="segmented" id="trendPeriod" role="tablist" aria-label="Time aggregation">
+        <button type="button" data-period="day" data-i18n="period.daily">Harian</button>
+        <button type="button" data-period="week" data-i18n="period.weekly">Mingguan</button>
+        <button type="button" class="active" data-period="month" data-i18n="period.monthly">Bulanan</button>
+        <button type="button" data-period="year" data-i18n="period.yearly">Tahunan</button>
+      </div>
+    </header>
+    <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+  </article>
+
+  <article class="panel category-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="overview.portfolioMix">Komposisi Portofolio</p>
+        <h2 data-i18n="overview.salesByCategory">Penjualan per Kategori</h2>
+      </div>
+      <span class="panel-meta-badge" id="categoryCountBadge">Mix</span>
+    </header>
+    <div class="category-breakdown" id="categoryBreakdown"></div>
+  </article>
+
+  <article class="panel product-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="overview.leaderboard">Peringkat Komersial</p>
+        <h2 data-i18n="overview.topProducts">Produk Performa Terbaik</h2>
+      </div>
+      <div class="panel-header-actions">
+        <div class="table-search-inline">
+          <i class="bi bi-search"></i>
+          <input type="search" id="topProductsSearch" data-i18n-placeholder="table.searchProducts" placeholder="Cari produk..." aria-label="Filter top products">
+        </div>
+        <a class="panel-link" href="/products"><span data-i18n="overview.fullPortfolio">Lihat semua</span> <i class="bi bi-arrow-up-right"></i></a>
+      </div>
+    </header>
+    <div class="table-scroll">
+      <table class="data-table" id="topProductsTableEl">
+        <thead>
+          <tr>
+            <th data-sort="rank" class="num-col" style="width:68px" data-i18n="th.rank">Peringkat</th>
+            <th data-sort="product_name" data-i18n="th.product">Produk</th>
+            <th data-sort="units" class="num-col" data-i18n="th.units">Unit</th>
+            <th data-sort="revenue" class="num-col" data-i18n="th.revenue">Pendapatan</th>
+            <th class="num-col" data-i18n="th.share">Pangsa</th>
+          </tr>
+        </thead>
+        <tbody id="topProducts"></tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel regional-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="overview.geoDist">Distribusi Geografis</p>
+        <h2 data-i18n="overview.regionalPerformance">Performa Wilayah</h2>
+      </div>
+      <a class="panel-link" href="/regions"><span data-i18n="overview.territoryDetail">Detail wilayah</span> <i class="bi bi-arrow-up-right"></i></a>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="regionChart"></canvas></div>
+    <div class="regional-mini-summary" id="regionalMiniSummary"></div>
+  </article>
+
+  <article class="panel recent-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="overview.orderLedger">Buku Besar Pesanan</p>
+        <h2 data-i18n="overview.recentTransactions">Transaksi Terbaru</h2>
+      </div>
+      <div class="panel-header-actions">
+        <div class="table-search-inline">
+          <i class="bi bi-search"></i>
+          <input type="search" id="recentSearchInput" data-i18n-placeholder="table.searchTransactions" placeholder="Cari ID pesanan, pelanggan, produk..." aria-label="Search recent transactions">
+        </div>
+      </div>
+    </header>
+    <div class="table-scroll">
+      <table class="data-table" id="recentTransactionsTableEl">
+        <thead>
+          <tr>
+            <th data-sort="order_id" data-i18n="th.orderId">ID Pesanan</th>
+            <th data-sort="order_date" data-i18n="th.date">Tanggal</th>
+            <th data-sort="customer_name" data-i18n="th.customer">Pelanggan</th>
+            <th data-sort="product_name" data-i18n="th.product">Produk</th>
+            <th data-sort="region" data-i18n="th.region">Wilayah</th>
+            <th data-sort="revenue" class="num-col" data-i18n="th.netRevenue">Pendapatan Bersih</th>
+            <th data-sort="order_status" data-i18n="th.status">Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentTransactions"></tbody>
+      </table>
+    </div>
+    <footer class="table-footer" id="recentTransactionsFooter"></footer>
+  </article>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

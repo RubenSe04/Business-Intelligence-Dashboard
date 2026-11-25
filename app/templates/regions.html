@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Regional Analytics · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.regions">Analitik Wilayah</span>{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="regions.eyebrow">Performa Teritorial · Hasil Geografis</p>
+    <h1 data-i18n="regions.title">Analitik Wilayah</h1>
+    <p class="page-description" data-i18n="regions.desc">Bandingkan pendapatan bersih, laba operasional, kepadatan pesanan, dan kontribusi margin di seluruh wilayah penjualan.</p>
+  </div>
+</section>
+
+<section class="kpi-grid compact" id="regionKpis" aria-label="Regional summary indicators"></section>
+
+<article class="panel panel-full" style="margin-bottom: 18px;">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="regions.compEyebrow">Perbandingan Wilayah</p>
+      <h2 data-i18n="regions.compTitle">Pendapatan vs. Profitabilitas per Wilayah</h2>
+    </div>
+    <span class="panel-meta-badge" data-i18n="regions.compBadge">Analisis Komparatif</span>
+  </header>
+  <div class="chart-wrap"><canvas id="regionComparisonChart"></canvas></div>
+</article>
+
+<article class="panel panel-full">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="regions.ledgerEyebrow">Buku Besar Wilayah</p>
+      <h2 data-i18n="regions.ledgerTitle">Rincian Performa Wilayah</h2>
+    </div>
+    <div class="panel-header-actions">
+      <div class="table-search-inline">
+        <i class="bi bi-search"></i>
+        <input type="search" id="regionTableSearch" data-i18n-placeholder="table.searchRegion" placeholder="Cari wilayah..." aria-label="Filter regional table">
+      </div>
+    </div>
+  </header>
+  <div class="table-scroll">
+    <table class="data-table" id="regionTableEl">
+      <thead>
+        <tr>
+          <th data-sort="region" data-i18n="th.region">Wilayah</th>
+          <th data-sort="orders" class="num-col" data-i18n="th.orders">Pesanan</th>
+          <th data-sort="units" class="num-col" data-i18n="th.units">Unit Terjual</th>
+          <th data-sort="revenue" class="num-col" data-i18n="th.netRevenue">Pendapatan Bersih</th>
+          <th data-sort="profit" class="num-col" data-i18n="th.netProfit">Laba Bersih</th>
+          <th data-sort="margin" class="num-col" data-i18n="th.margin">Margin Laba</th>
+        </tr>
+      </thead>
+      <tbody id="regionTable"></tbody>
+    </table>
+  </div>
+  <footer class="table-footer" id="regionTableFooter"></footer>
+</article>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>document.addEventListener('DOMContentLoaded', () => loadRegionAnalytics());</script>
+{% endblock %}

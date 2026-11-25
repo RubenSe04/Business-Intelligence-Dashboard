@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Sales Analytics · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.sales">Analitik Penjualan</span>{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="sales.eyebrow">Performa Komersial · Laju Pendapatan</p>
+    <h1 data-i18n="sales.title">Analitik Penjualan</h1>
+    <p class="page-description" data-i18n="sales.desc">Evaluasi pergerakan pendapatan dan laba harian, laju pertumbuhan bulanan (MoM), serta margin operasional tiap periode.</p>
+  </div>
+  <div class="page-heading-actions">
+    <button class="secondary-button" type="button" id="exportSalesCsv"><i class="bi bi-filetype-csv"></i> <span data-i18n="sales.exportCsv">Ekspor CSV</span></button>
+  </div>
+</section>
+
+<section class="kpi-grid compact" id="salesKpis" aria-label="Sales summary indicators">
+  <article class="kpi-card"><span data-i18n="sales.cumRev">Pendapatan Kumulatif</span><strong id="salesKpiRev">—</strong><small class="kpi-context" data-i18n="sales.acrossPeriod">Sepanjang periode aktif</small></article>
+  <article class="kpi-card"><span data-i18n="sales.cumProfit">Laba Kumulatif</span><strong id="salesKpiProfit">—</strong><small class="kpi-context" data-i18n="sales.netSurplus">Surplus bersih operasional</small></article>
+  <article class="kpi-card"><span data-i18n="sales.peakMonth">Pendapatan Bulanan Tertinggi</span><strong id="salesKpiPeak">—</strong><small class="kpi-context" id="salesKpiPeakMonth">—</small></article>
+  <article class="kpi-card"><span data-i18n="sales.avgMom">Rata-rata Pertumbuhan Bulanan</span><strong id="salesKpiGrowth">—</strong><small class="kpi-context" data-i18n="sales.momRate">Laju MoM rata-rata</small></article>
+</section>
+
+<section class="analytics-grid">
+  <article class="panel panel-wide">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="sales.timeSeries">Runtun Waktu</p>
+        <h2 data-i18n="sales.revVsProfit">Trajektori Pendapatan vs. Laba</h2>
+      </div>
+      <span class="panel-meta-badge" data-i18n="sales.dailyRes">Resolusi Harian</span>
+    </header>
+    <div class="chart-wrap"><canvas id="salesTrendChart"></canvas></div>
+  </article>
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="sales.momentum">Momentum</p>
+        <h2 data-i18n="sales.momGrowth">Pertumbuhan Bulanan (MoM)</h2>
+      </div>
+      <span class="panel-meta-badge">Varians %</span>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="salesGrowthChart"></canvas></div>
+  </article>
+</section>
+
+<article class="panel panel-full">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="sales.periodLedger">Buku Besar Periode</p>
+      <h2 data-i18n="sales.monthlyComparison">Perbandingan Penjualan Bulanan</h2>
+    </div>
+    <div class="panel-header-actions">
+      <div class="table-search-inline">
+        <i class="bi bi-search"></i>
+        <input type="search" id="monthlySalesSearch" data-i18n-placeholder="table.searchMonth" placeholder="Cari bulan (mis. 2025-04)..." aria-label="Filter monthly sales table">
+      </div>
+    </div>
+  </header>
+  <div class="table-scroll">
+    <table class="data-table" id="monthlySalesTableEl">
+      <thead>
+        <tr>
+          <th data-sort="month" data-i18n="th.month">Bulan</th>
+          <th data-sort="orders" class="num-col" data-i18n="th.orders">Pesanan</th>
+          <th data-sort="revenue" class="num-col" data-i18n="th.netRevenue">Pendapatan Bersih</th>
+          <th data-sort="profit" class="num-col" data-i18n="th.netProfit">Laba Bersih</th>
+          <th data-sort="margin" class="num-col" data-i18n="th.margin">Margin Laba</th>
+          <th data-sort="growth" class="num-col" data-i18n="th.momGrowth">Pertumbuhan MoM</th>
+        </tr>
+      </thead>
+      <tbody id="monthlySalesTable"></tbody>
+    </table>
+  </div>
+  <footer class="table-footer" id="monthlySalesFooter"></footer>
+</article>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>document.addEventListener('DOMContentLoaded', () => loadSalesAnalytics());</script>
+{% endblock %}

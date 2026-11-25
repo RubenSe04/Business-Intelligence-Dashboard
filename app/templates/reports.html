@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Reports · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.reports">Laporan</span>{% endblock %}
+{% block global_filters %}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="reports.eyebrow">Output Siap Keputusan · Mesin Ekspor</p>
+    <h1 data-i18n="reports.title">Laporan</h1>
+    <p class="page-description" data-i18n="reports.desc">Konfigurasikan rentang tanggal dan filter wilayah/kategori untuk mengunduh laporan CSV, buku kerja Excel, atau ringkasan PDF eksekutif.</p>
+  </div>
+</section>
+
+<section class="report-layout">
+  <article class="panel report-builder">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="reports.step1">1 · Konfigurasi Parameter</p>
+        <h2 data-i18n="reports.defineScope">Tentukan Cakupan Laporan</h2>
+      </div>
+      <button type="button" class="text-button" id="resetReportParams" data-i18n="filter.reset">Reset</button>
+    </header>
+    <div class="report-fields">
+      <label class="report-field">
+        <span data-i18n="filter.from">Dari Tanggal</span>
+        <input type="date" id="reportStart">
+      </label>
+      <label class="report-field">
+        <span data-i18n="filter.to">Sampai Tanggal</span>
+        <input type="date" id="reportEnd">
+      </label>
+      <label class="report-field">
+        <span data-i18n="filter.region">Wilayah</span>
+        <select id="reportRegion">
+          <option value="" data-i18n="filter.allRegions">Semua wilayah</option>
+        </select>
+      </label>
+      <label class="report-field">
+        <span data-i18n="filter.category">Kategori Produk</span>
+        <select id="reportCategory">
+          <option value="" data-i18n="filter.allCategories">Semua kategori</option>
+        </select>
+      </label>
+    </div>
+    <div class="report-scope-summary" id="reportScopeSummary">
+      <div class="scope-stat">
+        <span data-i18n="reports.matchingOrders">Pesanan Sesuai</span>
+        <strong id="reportPreviewOrders">—</strong>
+      </div>
+      <div class="scope-stat">
+        <span data-i18n="reports.scopedRevenue">Pendapatan Bersih</span>
+        <strong id="reportPreviewRevenue">—</strong>
+      </div>
+      <div class="scope-stat">
+        <span data-i18n="reports.scopedProfit">Laba Bersih</span>
+        <strong id="reportPreviewProfit">—</strong>
+      </div>
+      <div class="scope-stat">
+        <span data-i18n="reports.operatingMargin">Margin Operasional</span>
+        <strong id="reportPreviewMargin">—</strong>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel export-panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="reports.step2">2 · Format Dokumen</p>
+        <h2 data-i18n="reports.generateDownload">Buat &amp; Unduh</h2>
+      </div>
+    </header>
+    <div class="export-actions">
+      <button class="export-option" data-format="csv" type="button">
+        <div class="export-option-top">
+          <i class="bi bi-filetype-csv"></i>
+          <span class="format-tag">UTF-8 CSV</span>
+        </div>
+        <span>
+          <strong data-i18n="reports.csvTitle">Data Analitik CSV</strong>
+          <small data-i18n="reports.csvDesc">Baris transaksi mentah siap untuk diolah di Python, R, atau SQL.</small>
+        </span>
+      </button>
+      <button class="export-option" data-format="excel" type="button">
+        <div class="export-option-top">
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+          <span class="format-tag">XLSX Workbook</span>
+        </div>
+        <span>
+          <strong data-i18n="reports.excelTitle">Buku Kerja Excel</strong>
+          <small data-i18n="reports.excelDesc">Spreadsheet terformat dengan kolom terstruktur untuk pemodelan keuangan.</small>
+        </span>
+      </button>
+      <button class="export-option" data-format="pdf" type="button">
+        <div class="export-option-top">
+          <i class="bi bi-file-earmark-pdf"></i>
+          <span class="format-tag">A4 Landscape</span>
+        </div>
+        <span>
+          <strong data-i18n="reports.pdfTitle">Ringkasan Eksekutif PDF</strong>
+          <small data-i18n="reports.pdfDesc">Dokumen siap rapat berisi KPI utama dan daftar transaksi teratas.</small>
+        </span>
+      </button>
+    </div>
+  </article>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

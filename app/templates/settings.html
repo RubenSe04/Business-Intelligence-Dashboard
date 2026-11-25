@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Settings · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.settings">Pengaturan</span>{% endblock %}
+{% block global_filters %}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="settings.eyebrow">Konfigurasi Ruang Kerja · Preferensi Pengguna</p>
+    <h1 data-i18n="settings.title">Pengaturan</h1>
+    <p class="page-description" data-i18n="settings.desc">Sesuaikan identitas profil Anda, tema tampilan (Terang / Gelap), bahasa antarmuka, serta dataset sampel kasus Indonesia (Rupiah) atau Global (USD).</p>
+  </div>
+</section>
+
+<section class="settings-grid">
+  <!-- User Profile Card -->
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="settings.profileEyebrow">Identitas Pengguna</p>
+        <h2 data-i18n="settings.profileTitle">Profil Analis</h2>
+      </div>
+      <span class="avatar user-avatar-initials">RS</span>
+    </header>
+    <div class="settings-copy">
+      <p data-i18n="settings.profileDesc">Perbarui nama tampilan, jabatan, dan email yang ditampilkan pada sidebar dan header ruang kerja NexusBI.</p>
+      <div class="profile-form-grid">
+        <label>
+          <span data-i18n="settings.fullName">Nama Lengkap</span>
+          <input type="text" id="profileNameInput" value="Ruben Setiaji" placeholder="Ruben Setiaji">
+        </label>
+        <label>
+          <span data-i18n="settings.roleTitle">Jabatan / Peran</span>
+          <input type="text" id="profileRoleInput" value="Lead BI Architect" placeholder="Lead BI Architect">
+        </label>
+        <label style="grid-column: 1 / -1;">
+          <span data-i18n="settings.emailAddr">Alamat Email</span>
+          <input type="email" id="profileEmailInput" value="ruben.setiaji@nexusbi.id" placeholder="ruben.setiaji@nexusbi.id">
+        </label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button class="primary-button" type="button" id="saveProfileBtn">
+          <i class="bi bi-check2-circle"></i> <span data-i18n="settings.saveProfile">Simpan Profil</span>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <!-- Appearance, Theme & Language Card -->
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="settings.interfaceEyebrow">Antarmuka &amp; Aksesibilitas</p>
+        <h2 data-i18n="settings.displayTitle">Tema, Bahasa &amp; Tampilan</h2>
+      </div>
+    </header>
+    <div class="settings-copy">
+      <div class="setting-toggle">
+        <span>
+          <strong data-i18n="settings.themeLabel">Tema Tampilan (Light / Dark Mode)</strong>
+          <small data-i18n="settings.themeSub">Beralih antara tema terang editorial dan tema gelap berkinerja tinggi.</small>
+        </span>
+        <div class="segmented" id="themeSegmented">
+          <button type="button" data-theme-val="light" class="active"><i class="bi bi-sun"></i> <span data-i18n="settings.light">Terang</span></button>
+          <button type="button" data-theme-val="dark"><i class="bi bi-moon-stars"></i> <span data-i18n="settings.dark">Gelap</span></button>
+        </div>
+      </div>
+      <hr class="settings-divider">
+      <div class="setting-toggle">
+        <span>
+          <strong data-i18n="settings.langLabel">Bahasa Antarmuka (Language)</strong>
+          <small data-i18n="settings.langSub">Gunakan Bahasa Indonesia atau Bahasa Inggris di seluruh halaman.</small>
+        </span>
+        <div class="segmented" id="langSegmented">
+          <button type="button" data-lang-val="id" class="active">Indonesia (ID)</button>
+          <button type="button" data-lang-val="en">English (EN)</button>
+        </div>
+      </div>
+      <hr class="settings-divider">
+      <label class="setting-toggle" for="reduceMotion">
+        <span>
+          <strong data-i18n="settings.reduceMotion">Kurangi Animasi &amp; Transisi</strong>
+          <small data-i18n="settings.reduceMotionSub">Matikan animasi hitung angka KPI dan grafik masuk.</small>
+        </span>
+        <input type="checkbox" id="reduceMotion" class="toggle-switch">
+      </label>
+      <hr class="settings-divider">
+      <label class="setting-toggle" for="compactSidebarToggle">
+        <span>
+          <strong data-i18n="settings.compactNav">Sidebar Navigasi Ringkas</strong>
+          <small data-i18n="settings.compactNavSub">Ciutkan sidebar kiri menjadi bilah ikon dengan tooltip instan.</small>
+        </span>
+        <input type="checkbox" id="compactSidebarToggle" class="toggle-switch">
+      </label>
+    </div>
+  </article>
+
+  <!-- Dataset & Currency Switcher Card (Full Width) -->
+  <article class="panel" style="grid-column: 1 / -1;">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="settings.dataSourceEyebrow">Siklus Sumber Data &amp; Mata Uang</p>
+        <h2 data-i18n="settings.demoDatasetTitle">Pilihan Dataset Sampel (Kasus Indonesia IDR vs Global USD)</h2>
+      </div>
+      <span class="status active" id="activeDatasetStatusBadge">Ready</span>
+    </header>
+    <div class="settings-copy">
+      <p data-i18n="settings.demoDesc">Pilih skenario dataset bawaan untuk melihat simulasi analitik menggunakan mata uang Rupiah (IDR) dengan perusahaan, produk, dan wilayah Indonesia, atau kembalikan ke dataset Global (USD) kapan saja.</p>
+      <div class="dataset-preset-cards">
+        <div class="preset-dataset-card" id="presetCardIndonesia">
+          <div>
+            <h4>
+              <span><i class="bi bi-globe-asia-australia"></i> <span data-i18n="settings.idPresetTitle">Kasus Bisnis Indonesia (Rupiah / IDR)</span></span>
+              <span class="format-tag">Rp · IDR</span>
+            </h4>
+            <p data-i18n="settings.idPresetDesc">1.200 transaksi B2B korporat Indonesia (PT/CV Nusantara, wilayah Jabodetabek, Jawa, Sumatera, Kalimantan, Sulawesi, Bali) periode Jan 2024 – Des 2025 dalam mata uang Rupiah.</p>
+          </div>
+          <button class="primary-button" type="button" id="reloadIndonesiaDemo">
+            <i class="bi bi-check2-circle"></i> <span data-i18n="settings.activateIndonesia">Aktifkan Dataset Indonesia (IDR)</span>
+          </button>
+        </div>
+
+        <div class="preset-dataset-card" id="presetCardGlobal">
+          <div>
+            <h4>
+              <span><i class="bi bi-globe2"></i> <span data-i18n="settings.globalPresetTitle">Dataset Sebelumnya · Global Enterprise (USD)</span></span>
+              <span class="format-tag">$ · USD</span>
+            </h4>
+            <p data-i18n="settings.globalPresetDesc">1.200 transaksi internasional (North America, Europe, Asia Pacific, Latin America, Middle East) periode Jan 2024 – Des 2025 menggunakan mata uang Dolar AS (USD).</p>
+          </div>
+          <button class="secondary-button" type="button" id="reloadDemo">
+            <i class="bi bi-arrow-repeat"></i> <span data-i18n="settings.activateGlobal">Gunakan Dataset Global Sebelumnya (USD)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

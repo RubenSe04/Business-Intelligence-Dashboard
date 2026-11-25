@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Customer Analytics · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.customers">Analitik Pelanggan</span>{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="customers.eyebrow">Inteligensi Pelanggan · Segmentasi RFM</p>
+    <h1 data-i18n="customers.title">Analitik Pelanggan</h1>
+    <p class="page-description" data-i18n="customers.desc">Analisis konsentrasi akun, frekuensi pembelian, rentang waktu transaksi terakhir (recency), dan distribusi segmen RFM.</p>
+  </div>
+</section>
+
+<section class="kpi-grid compact" id="customerKpis" aria-label="Customer intelligence indicators"></section>
+
+<section class="analytics-grid">
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="customers.cohortDist">Distribusi Kohort</p>
+        <h2 data-i18n="customers.rfmSegments">Segmen Pelanggan RFM</h2>
+      </div>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="segmentChart"></canvas></div>
+  </article>
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="customers.concentration">Konsentrasi Akun</p>
+        <h2 data-i18n="customers.topCustomers">Pelanggan Teratas berdasarkan Nilai Transaksi</h2>
+      </div>
+    </header>
+    <div class="chart-wrap chart-small"><canvas id="customerChart"></canvas></div>
+  </article>
+</section>
+
+<article class="panel panel-full">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="customers.ledgerEyebrow">Buku Besar Kohort RFM</p>
+      <h2 data-i18n="customers.ledgerTitle">Peringkat Pelanggan &amp; Klasifikasi Segmen</h2>
+    </div>
+    <div class="panel-header-actions">
+      <select id="customerSegmentFilter" class="inline-select" aria-label="Filter by customer segment">
+        <option value="" data-i18n="customers.allSegments">Semua segmen</option>
+      </select>
+      <div class="table-search-inline">
+        <i class="bi bi-search"></i>
+        <input type="search" id="customerTableSearch" data-i18n-placeholder="table.searchCustomer" placeholder="Cari pelanggan atau segmen..." aria-label="Search customer table">
+      </div>
+    </div>
+  </header>
+  <div class="table-scroll">
+    <table class="data-table" id="customerTableEl">
+      <thead>
+        <tr>
+          <th data-sort="customer_name" data-i18n="th.customer">Pelanggan</th>
+          <th data-sort="recency" class="num-col" data-i18n="th.recency">Recency (Hari)</th>
+          <th data-sort="frequency" class="num-col" data-i18n="th.frequency">Frekuensi (Pesanan)</th>
+          <th data-sort="monetary" class="num-col" data-i18n="th.monetary">Nilai Monetary</th>
+          <th data-sort="segment" data-i18n="th.segment">Segmen RFM</th>
+        </tr>
+      </thead>
+      <tbody id="customerTable"></tbody>
+    </table>
+  </div>
+  <footer class="table-footer" id="customerTableFooter"></footer>
+</article>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+<script>document.addEventListener('DOMContentLoaded', () => loadCustomerAnalytics());</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Data Management · NexusBI{% endblock %}
+{% block breadcrumb %}<span data-i18n="nav.data">Manajemen Data</span>{% endblock %}
+{% block global_filters %}{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div class="page-heading-copy">
+    <p class="eyebrow" data-i18n="data.eyebrow">Administrasi Sumber Data · Pipeline Ingesti</p>
+    <h1 data-i18n="data.title">Manajemen Data</h1>
+    <p class="page-description" data-i18n="data.desc">Unggah, validasi, pratinjau, atau beralih antar dataset sampel kasus Indonesia (Rupiah) dan Global (USD).</p>
+  </div>
+  <div class="page-heading-actions">
+    <button class="secondary-button" type="button" id="loadIndonesiaPresetBtn">
+      <i class="bi bi-globe-asia-australia"></i> <span data-i18n="data.useIndonesiaBtn">Gunakan Kasus Indonesia (IDR)</span>
+    </button>
+    <button class="secondary-button" type="button" id="loadGlobalPresetBtn">
+      <i class="bi bi-globe2"></i> <span data-i18n="data.useGlobalBtn">Dataset Global (USD)</span>
+    </button>
+    <button class="primary-button" type="button" id="uploadButton">
+      <i class="bi bi-cloud-arrow-up"></i> <span data-i18n="data.uploadBtn">Unggah dataset</span>
+    </button>
+  </div>
+</section>
+
+<input type="file" id="datasetFile" accept=".csv,.xlsx,.xls" hidden>
+
+<section class="data-layout">
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="data.workflowEyebrow">Alur Impor</p>
+        <h2 data-i18n="data.validationTitle">Validasi Skema &amp; Kualitas Data</h2>
+      </div>
+      <span class="panel-meta-badge" data-i18n="data.reqFields">16 Kolom Wajib</span>
+    </header>
+    <div id="validationPanel" class="validation-panel">
+      <div class="upload-dropzone" id="uploadDropzone" tabindex="0" role="button" aria-label="Click or drag and drop a dataset file to validate">
+        <div class="dropzone-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+        <h3 data-i18n="data.dropTitle">Pilih atau Tarik File Dataset Transaksi</h3>
+        <p data-i18n="data.dropDesc">Mendukung file CSV dan Excel (.xlsx, .xls) berisi kolom pesanan, pelanggan, produk, dan biaya.</p>
+        <span class="secondary-button dropzone-cta" data-i18n="data.browseBtn">Pilih file lokal</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <header class="panel-header">
+      <div>
+        <p class="eyebrow" data-i18n="data.historyEyebrow">Riwayat Repositori</p>
+        <h2 data-i18n="data.availableDatasets">Dataset Tersedia</h2>
+      </div>
+    </header>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th data-i18n="th.datasetName">Nama Dataset</th>
+            <th class="num-col" data-i18n="th.rows">Baris</th>
+            <th data-i18n="th.status">Status</th>
+            <th class="num-col" data-i18n="th.actions">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="datasetTable"></tbody>
+      </table>
+    </div>
+  </article>
+</section>
+
+<article class="panel panel-full" style="margin-top: 18px;">
+  <header class="panel-header">
+    <div>
+      <p class="eyebrow" data-i18n="data.previewEyebrow">Inspeksi Rekaman Sumber</p>
+      <h2 data-i18n="data.previewTitle">Pratinjau Dataset</h2>
+    </div>
+    <span class="panel-meta-badge" id="previewMetaBadge" data-i18n="data.awaiting">Menunggu pilihan</span>
+  </header>
+  <div class="table-scroll" id="datasetPreview">
+    <div class="empty-state compact-empty">
+      <p data-i18n="data.previewEmpty">Unggah file atau klik ikon mata (pratinjau) pada dataset yang tersedia untuk melihat contoh baris data.</p>
+    </div>
+  </div>
+</article>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/datasets.js') }}"></script>
+{% endblock %}
